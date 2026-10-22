@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";import {isAdmin} from "@/lib/admin-auth";import {searchImdbTitles} from "@/lib/imdb";
+export async function GET(req:Request){if(!await isAdmin())return NextResponse.json({error:"Unauthorized"},{status:401});try{return NextResponse.json({items:await searchImdbTitles(new URL(req.url).searchParams.get("q")??"")});}catch(e){return NextResponse.json({error:e instanceof Error?e.message:"IMDb search unavailable"},{status:503});}}
