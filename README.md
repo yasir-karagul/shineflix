@@ -1,29 +1,41 @@
 # Shineflix
 
-Arabic-first anime discovery catalogue built with Next.js and TypeScript.
+Arabic-first media catalogue built with Next.js, TypeScript, Prisma, and PostgreSQL.
 
-## Development
+## Features
 
-Run `npm install` and `npm run dev`.
+- Arabic RTL responsive catalogue for anime, movies, and TV series.
+- Admin CMS at `/admin`, protected by a signed, HTTP-only session cookie.
+- Create, edit, publish, archive, and delete content records.
+- Search licensed IMDb metadata, select a result, review it, then save it to the database.
+- Manage seasons and episodes; episode embeds are unpublished by default and are displayed only when published.
+- SEO metadata, sitemap, and robots rules.
 
-This project is a discovery catalogue and does not scrape or redistribute unauthorized video streams.
+## Local development
 
+1. Install Node.js 20+ and PostgreSQL.
+2. Copy `.env.example` to `.env.local` and fill in the database URL and strong admin credentials.
+3. Install dependencies with `npm install`.
+4. Create/update the schema with `npm run db:push`.
+5. Start the app with `npm run dev`; production build: `npm run build`.
 
-## Admin CMS and catalog
+Never commit real secrets. Set `ADMIN_PASSWORD` to a unique password and `ADMIN_SESSION_SECRET` to at least 32 random characters. Configure all environment variables in your hosting provider as well.
 
-The admin dashboard is available at `/admin`; the login form is at `/admin/login`. Configure the environment variables from `.env.example` in your deployment provider before using it. Use a unique, long `ADMIN_PASSWORD` and a random `ADMIN_SESSION_SECRET` of at least 32 characters. Do not commit real credentials.
+## IMDb metadata integration
 
-### Database setup
+The search adapter uses the AWS SDK's `SendApiAsset` operation to call the official IMDb GraphQL API through an active AWS Data Exchange subscription. You must have the appropriate licensed IMDb product access and configure:
 
-1. Provision PostgreSQL (for example, Neon or Supabase).
-2. Set `DATABASE_URL` in the deployment environment.
-3. Run `npm install`, then `npm run db:push` in a trusted development environment to create/update the schema.
-4. Deploy with `npm run build`.
+- `IMDB_DATASET_ID`, `IMDB_REVISION_ID`, and `IMDB_ASSET_ID` from the subscribed data product.
+- `IMDB_API_KEY` issued for that API access.
+- `IMDB_GRAPHQL_PATH` for the provider's GraphQL route (defaults to `/graphql`).
+- AWS credentials with permission to invoke the subscribed API asset, plus `AWS_REGION`.
 
-### IMDb metadata
+The admin flow is: search IMDb, select a result, review or correct the metadata, then save it. Search does not import IMDb's entire catalogue in bulk. The public IMDb downloadable datasets have separate non-commercial restrictions; do not republish them in a public or commercial catalogue without permission. Never scrape IMDb pages or use metadata/images beyond the rights granted by your license.
 
-IMDb integration is designed for the official IMDb API offered through AWS Data Exchange. It will not work until the relevant product access is approved and the correct GraphQL endpoint, dataset/revision/asset IDs, region, and AWS credentials are configured. IMDb public datasets have separate non-commercial restrictions; do not use them to populate a commercial public catalog without permission. Never scrape IMDb pages or embed IMDb media assets outside the applicable license.
+## Seasons, episodes, and embeds
 
-### Episode embeds
+Create a title, add seasons, then add episodes to the chosen season. Use only video URLs that you own or are explicitly authorized to embed. An embed URL does not grant streaming or redistribution rights. Episodes should remain unpublished until the rights and URL have been checked. You can configure additional permitted HTTPS player hostnames with `EMBED_ALLOWED_HOSTS` (comma-separated); YouTube and Vimeo player hosts are allowed by default.
 
-The CMS can store an embed URL per episode. Only use video providers and URLs for which you have the rights to display and embed the content. An embed link alone does not grant redistribution rights. The public detail page displays published episodes only.
+## Deployment
+
+Set `NEXT_PUBLIC_SITE_URL` to the canonical production origin. Configure `DATABASE_URL`, admin credentials, and any optional IMDb credentials in the hosting provider. Run the Prisma schema setup before using the CMS. Google indexing requires a deployed public domain and Search Console verification; sitemap submission does not guarantee indexing.
