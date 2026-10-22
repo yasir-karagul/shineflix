@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
-const links = [{href:"/",label:"الرئيسية"},{href:"/anime",label:"الأنمي"},{href:"/movies",label:"الأفلام"},{href:"/schedule",label:"جدول الحلقات"}];
+const links = [{href:"/",label:"الرئيسية"},{href:"/anime",label:"الأنمي"},{href:"/movies",label:"الأفلام"},{href:"/series",label:"المسلسلات"},{href:"/schedule",label:"جدول الحلقات"}];
 export function Header() {
   const [open,setOpen] = useState(false);
   const pathname = usePathname();
