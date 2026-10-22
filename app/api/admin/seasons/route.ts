@@ -1,0 +1,3 @@
+import {NextResponse} from "next/server";import {z} from "zod";import {isAdmin} from "@/lib/admin-auth";import {prisma} from "@/lib/prisma";
+const schema=z.object({contentId:z.string().min(1),seasonNumber:z.number().int().min(1).max(1000),title:z.string().max(240).optional()});
+export async function POST(req:Request){if(!await isAdmin())return NextResponse.json({error:"Unauthorized"},{status:401});const p=schema.safeParse(await req.json().catch(()=>null));if(!p.success)return NextResponse.json({error:"بيانات الموسم غير صحيحة."},{status:400});try{return NextResponse.json({season:await prisma.season.create({data:p.data})},{status:201});}catch{return NextResponse.json({error:"تعذّر إنشاء الموسم."},{status:400});}}
