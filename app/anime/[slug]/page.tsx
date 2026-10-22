@@ -1,11 +1,20 @@
-import type {Metadata} from "next";
-import Link from "next/link";
-import {notFound} from "next/navigation";
-import {prisma} from "@/lib/prisma";
-import {anime} from "@/lib/data";
-import {FavoriteButton} from "@/components/favorite-button";
-type Props={params:Promise<{slug:string}>};
-async function getItem(slug:string){try{const row=await prisma.content.findUnique({where:{slug},include:{seasons:{orderBy:{seasonNumber:"asc"},include:{episodes:{where:{isPublished:true},orderBy:{episodeNumber:"asc"}}}}}});if(row&&row.status==="PUBLISHED")return {id:row.id,slug:row.slug,title:row.title,titleEn:row.originalTitle??row.title,year:row.releaseYear??0,status:row.endYear?"مكتمل":"متاح",genres:row.genres,rating:row.imdbRating?.toFixed(1)??"—",episodes:row.type==="MOVIE"?"فيلم":row.type==="ANIME"?"أنمي":"مسلسل",description:row.synopsis,cover:row.posterUrl?'url("'+row.posterUrl+'") center/cover no-repeat':"linear-gradient(145deg,#24121f,#8d233e)",seasons:row.seasons,imdbUrl:row.imdbUrl};}catch{}const old=anime.find(a=>a.slug===slug);return old?{...old,seasons:[],imdbUrl:null}:null;}
-export async function generateMetadata({params}:Props):Promise<Metadata>{const {slug}=await params;const i=await getItem(slug);return {title:i?.title??"العنوان غير موجود",description:i?.description,robots:i?undefined:{index:false,follow:false}};}
-export const dynamic="force-dynamic";
-export default async function DetailPage({params}:Props){const {slug}=await params;const item=await getItem(slug);if(!item)notFound();return <div className="page-shell inner-page"><Link href="/anime" className="back-link">→ العودة إلى المكتبة</Link><section className="detail-layout"><div className="detail-poster" style={{background:item.cover}}><span className="poster-vertical">{item.titleEn}</span><span className="poster-title">{item.title}</span><span className="poster-rating">★ {item.rating}</span></div><div className="detail-copy"><span className="eyebrow">ملف العمل · {item.year}</span><h1>{item.title}</h1><p className="detail-en">{item.titleEn}</p><div className="detail-meta"><span>{item.status}</span><span>{item.episodes}</span><span>★ {item.rating}</span></div><p className="detail-description">{item.description}</p><div className="detail-tags">{item.genres.map((g:string)=><span key={g}>{g}</span>)}</div><div className="detail-actions"><FavoriteButton slug={item.slug}/><span>أضف العمل إلى قائمتك الشخصية</span>{item.imdbUrl&&<a href={item.imdbUrl} target="_blank" rel="noreferrer">صفحة IMDb ↗</a>}</div></div></section>{item.seasons?.length>0&&<section className="episode-library"><h2>المواسم والحلقات</h2>{item.seasons.map((season:any)=><div className="episode-season" key={season.id}><h3>{season.title||"الموسم "+season.seasonNumber}</h3>{season.episodes.map((ep:any)=><article className="episode-card" key={ep.id}><div><strong>{ep.episodeNumber}. {ep.title}</strong><p>{ep.synopsis}</p></div>{ep.embedUrl&&<details><summary>مشاهدة الحلقة</summary><div className="embed-frame"><iframe src={ep.embedUrl} title={ep.title} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-presentation" allow="fullscreen; picture-in-picture" allowFullScreen/></div></details>}</article>)}</div>)}</section>}<p className="detail-disclaimer">تُعرض روابط المشغّلات التي يضيفها مدير الموقع فقط. يجب أن يكون مصدر الفيديو مرخّصًا ويسمح بالتضمين.</p></div>;}
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { ContentDetail } from "@/components/content-detail";
+import { getPublicDetail } from "@/lib/public-detail";
+
+type Props = { params: Promise<{ slug: string }> };
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const item = await getPublicDetail(slug, "ANIME");
+  return { title: item?.title ?? "العنوان غير موجود", description: item?.synopsis ?? undefined, robots: item ? undefined : { index: false, follow: false } };
+}
+
+export default async function AnimeDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const item = await getPublicDetail(slug, "ANIME");
+  if (!item) notFound();
+  return <ContentDetail item={item} />;
+}
