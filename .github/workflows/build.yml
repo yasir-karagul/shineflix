@@ -1,0 +1,28 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://test:test@localhost:5432/shineflix?schema=public
+      NEXT_PUBLIC_SITE_URL: https://shineflix.example
+      ADMIN_USERNAME: ci-admin
+      ADMIN_PASSWORD: ci-only-password-not-for-production
+      ADMIN_SESSION_SECRET: ci-only-session-secret-012345678901234567890123
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
