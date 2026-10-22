@@ -1,27 +1,60 @@
 import Link from "next/link";
-import { AnimeCard } from "@/components/anime-card";
-import { anime, genres } from "@/lib/data";
+
+const features = [
+  { icon: "⌕", title: "اكتشف بسهولة", text: "ابحث عن الأعمال واستكشفها حسب التصنيف والحالة بدلًا من التنقل العشوائي." },
+  { icon: "✦", title: "مكتبة مرتّبة", text: "صفحات واضحة لكل عمل مع نبذة مختصرة وتفاصيل تساعدك على الاختيار." },
+  { icon: "♡", title: "قائمتك الخاصة", text: "احفظ الأعمال التي تهمك وارجع إليها لاحقًا من متصفحك." },
+  { icon: "◷", title: "تابع المواعيد", text: "اعرض جدول الحلقات التجريبي في صفحة واحدة، مع التنبيه إلى التحقق من المصادر الرسمية." }
+];
 
 export default function HomePage() {
-  const featured = anime[0];
-  return <div className="page-shell">
-    <section className="hero">
-      <div className="hero-content">
-        <span className="eyebrow"><span className="live-dot" /> اكتشف عالمك التالي</span>
-        <h1>قصتك القادمة<br /><span>تبدأ من هنا.</span></h1>
-        <p>وجهتك لاكتشاف الأنمي، متابعة الإصدارات، وبناء قائمتك الخاصة — كل ذلك في تجربة عربية مصممة لك.</p>
-        <div className="hero-actions"><Link className="button button-primary" href="/anime">استكشف الأنمي <span>←</span></Link><Link className="button button-ghost" href="/schedule">جدول الحلقات</Link></div>
-        <div className="hero-proof"><span>✦</span> اكتشاف أسهل. مشاهدة أذكى.</div>
+  return <div className="landing-page">
+    <section className="landing-hero page-shell">
+      <div className="landing-copy">
+        <span className="eyebrow"><span className="live-dot" /> عالم الأنمي بين يديك</span>
+        <h1>حكايتك التالية<br /><span>تبدأ مع Shineflix.</span></h1>
+        <p>اكتشف المسلسلات والأفلام، تعرّف على أعمال جديدة، ونظّم قائمة الأنمي التي تريد متابعتها — في تجربة عربية بسيطة وسريعة.</p>
+        <div className="landing-actions">
+          <Link href="/anime" className="button button-primary">اذهب إلى المكتبة <span>←</span></Link>
+          <Link href="/schedule" className="button button-ghost">مواعيد الحلقات <span>↗</span></Link>
+        </div>
+        <div className="landing-note"><span>✦</span> اكتشاف أفضل، وتنظيم أسهل، وتجربة تناسبك.</div>
       </div>
-      <div className="hero-art" aria-label="تصميم فني تجريدي" role="img">
-        <div className="orb orb-one" /><div className="orb orb-two" /><div className="art-ring" /><div className="art-word">SHINE<span>FLIX</span></div>
-        <div className="art-label"><span className="live-dot" /> YOUR NEXT OBSESSION</div>
-        <div className="art-sticker">NEW<br />WORLD<br /><b>↗</b></div>
+      <div className="landing-visual" aria-label="لوحة فنية تجريدية لهوية Shineflix" role="img">
+        <div className="landing-visual-glow" />
+        <div className="landing-visual-ring ring-a" />
+        <div className="landing-visual-ring ring-b" />
+        <div className="landing-visual-sphere" />
+        <div className="landing-visual-logo">SHINE<span>FLIX</span></div>
+        <div className="landing-visual-caption"><span className="live-dot" /> FIND YOUR NEXT STORY</div>
+        <div className="landing-sticker">YOUR NEXT<br /><strong>FAVORITE</strong><br />✦</div>
       </div>
     </section>
-    <section className="stats-strip"><div><strong>اكتشف</strong><span>أعمال تناسب ذوقك</span></div><div><strong>تابع</strong><span>مواعيد الحلقات القادمة</span></div><div><strong>احفظ</strong><span>قائمة المشاهدة الخاصة بك</span></div></section>
-    <section className="section-block"><div className="section-heading"><div><span className="eyebrow">مختارة لك</span><h2>أنميات تستحق وقتك</h2><p>ابدأ من هنا، وقد تجد حكايتك المفضلة التالية.</p></div><Link className="text-link" href="/anime">عرض الكل <span>←</span></Link></div><div className="anime-grid">{anime.slice(0,4).map(item => <AnimeCard key={item.slug} anime={item} />)}</div></section>
-    <section className="genre-section"><div className="section-heading"><div><span className="eyebrow">حسب مزاجك</span><h2>ما الذي تحب مشاهدته؟</h2></div></div><div className="genre-pills">{genres.map(g => <Link key={g} href={"/anime?genre="+encodeURIComponent(g)} className="genre-pill">{g}<span>↗</span></Link>)}</div></section>
-    <section className="cta-panel"><div><span className="eyebrow">قائمتك، بطريقتك</span><h2>لا تفقد أنميًا تريد العودة إليه.</h2><p>احفظ الأعمال التي تهمك في قائمة شخصية على هذا الجهاز.</p></div><Link href="/anime" className="button button-primary">ابنِ قائمتك <span>←</span></Link></section>
+
+    <section className="landing-stats page-shell" aria-label="مميزات Shineflix">
+      <div><strong>اكتشف</strong><span>حسب النوع والحالة</span></div>
+      <div><strong>نظّم</strong><span>قائمة مشاهدة محلية</span></div>
+      <div><strong>تابع</strong><span>صفحات وجدول في مكان واحد</span></div>
+    </section>
+
+    <section className="landing-features page-shell">
+      <div className="section-heading">
+        <div><span className="eyebrow">مصمم لعشّاق الأنمي</span><h2>كل شيء يبدأ باختيار جيد.</h2><p>أدوات بسيطة تساعدك على العثور على العمل المناسب لمزاجك.</p></div>
+      </div>
+      <div className="landing-feature-grid">
+        {features.map(feature => <article className="landing-feature" key={feature.title}>
+          <span className="landing-feature-icon" aria-hidden="true">{feature.icon}</span>
+          <h3>{feature.title}</h3>
+          <p>{feature.text}</p>
+        </article>)}
+      </div>
+    </section>
+
+    <section className="landing-cta page-shell">
+      <div className="landing-cta-panel">
+        <div><span className="eyebrow">ابدأ الاستكشاف</span><h2>العالم التالي ينتظرك.</h2><p>افتح مكتبة Shineflix واعثر على أنمي جديد تضيفه إلى قائمتك.</p></div>
+        <Link href="/anime" className="button button-primary">تصفّح الأنمي <span>←</span></Link>
+      </div>
+    </section>
   </div>;
 }
