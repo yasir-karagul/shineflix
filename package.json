@@ -1,14 +1,19 @@
 {
   "name": "shineflix",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@aws-sdk/client-dataexchange": "^3.750.0",
+    "@prisma/client": "^6.7.0",
     "next": "^15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -19,6 +24,7 @@
     "@types/react-dom": "^19.0.4",
     "eslint": "^9.22.0",
     "eslint-config-next": "^15.2.4",
+    "prisma": "^6.7.0",
     "typescript": "^5.8.2"
   }
 }
