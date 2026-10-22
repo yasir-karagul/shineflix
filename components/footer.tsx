@@ -1,0 +1,2 @@
+import Link from "next/link";
+export function Footer(){return <footer className="site-footer"><div className="footer-inner"><Link href="/" className="brand"><span className="brand-mark">S<span>✦</span></span><span className="brand-name">shineflix</span></Link><p>مساحة لاكتشاف الحكايات، لا لمشاركة محتوى غير مرخّص.</p><div className="footer-links"><Link href="/anime">الأنمي</Link><Link href="/movies">الأفلام</Link><Link href="/schedule">الجدول</Link></div></div><div className="footer-bottom"><span>© 2026 Shineflix</span><span>صُنع لعشّاق الحكايات ✦</span></div></footer>}
