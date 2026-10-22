@@ -39,6 +39,7 @@ model Content {
   imdbRating      Float?
   imdbVotes       Int?
   imdbUrl         String?
+  embedUrl        String?
   isFeatured      Boolean           @default(false)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
