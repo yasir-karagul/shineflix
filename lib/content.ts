@@ -1,12 +1,36 @@
-import type {ContentType} from "@prisma/client";
-import {prisma} from "@/lib/prisma";
-import {anime as fallbackAnime} from "@/lib/data";
-export async function getPublishedContent(type?:ContentType){
- try{
-  const rows=await prisma.content.findMany({where:{status:"PUBLISHED",...(type?{type}:{})},orderBy:[{isFeatured:"desc"},{updatedAt:"desc"}],take:100});
-  if(rows.length)return rows.map(r=>({id:r.id,slug:r.slug,title:r.title,titleEn:r.originalTitle??r.title,year:r.releaseYear??0,status:r.endYear?("مكتمل" as const):("يعرض الآن" as const),genres:r.genres,rating:r.imdbRating?.toFixed(1)??"—",episodes:r.type==="MOVIE"?"فيلم":r.type==="ANIME"?"أنمي":"مسلسل",description:r.synopsis,accent:"#ef334f",cover:r.posterUrl?'url("'+r.posterUrl+'") center/cover no-repeat':"linear-gradient(145deg,#24121f,#8d233e)",featured:r.isFeatured,type:r.type,posterUrl:r.posterUrl,imdbId:r.imdbId}));
- }catch{/* Database is optional until production configuration is supplied. */}
- if(type&&type!=="ANIME")return [];
- return fallbackAnime.map(r=>({...r,type:"ANIME" as const}));
+import type { ContentType } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+
+export async function getPublishedContent(type?: ContentType) {
+  try {
+    const rows = await prisma.content.findMany({
+      where: { status: "PUBLISHED", ...(type ? { type } : {}) },
+      orderBy: [{ isFeatured: "desc" }, { updatedAt: "desc" }],
+      take: 100
+    });
+    return rows.map(row => ({
+      id: row.id,
+      slug: row.slug,
+      title: row.title,
+      titleEn: row.originalTitle ?? row.title,
+      year: row.releaseYear ?? 0,
+      status: row.endYear ? "مكتمل" as const : "يعرض الآن" as const,
+      genres: row.genres,
+      rating: row.imdbRating?.toFixed(1) ?? "—",
+      episodes: row.type === "MOVIE" ? "فيلم" : row.type === "ANIME" ? "أنمي" : "مسلسل",
+      description: row.synopsis,
+      accent: "#ef334f",
+      cover: row.posterUrl ? `url("${row.posterUrl}") center/cover no-repeat` : "linear-gradient(145deg,#24121f,#8d233e)",
+      featured: row.isFeatured,
+      type: row.type,
+      posterUrl: row.posterUrl,
+      imdbId: row.imdbId
+    }));
+  } catch {
+    return [];
+  }
 }
-export function toContentType(v:string):ContentType|undefined{return v==="MOVIE"||v==="SERIES"||v==="ANIME"?v:undefined;}
+
+export function toContentType(value: string): ContentType | undefined {
+  return value === "MOVIE" || value === "SERIES" || value === "ANIME" ? value : undefined;
+}
