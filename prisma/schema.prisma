@@ -7,42 +7,86 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Anime {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  titleEn     String
-  description String   @db.Text
-  year        Int
-  status      String
-  rating      Decimal? @db.Decimal(3, 1)
-  coverUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  genres      AnimeGenre[]
+enum ContentType {
+  MOVIE
+  SERIES
+  ANIME
 }
 
-model Genre {
-  id    String       @id @default(cuid())
-  name  String       @unique
-  anime AnimeGenre[]
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }
 
-model AnimeGenre {
-  animeId String
-  genreId String
-  anime   Anime  @relation(fields: [animeId], references: [id], onDelete: Cascade)
-  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade)
+model Content {
+  id              String            @id @default(cuid())
+  imdbId          String?           @unique
+  slug            String            @unique
+  type            ContentType
+  title           String
+  originalTitle   String?
+  synopsis        String            @default("") @db.Text
+  releaseYear     Int?
+  endYear         Int?
+  runtimeMinutes  Int?
+  status          PublicationStatus @default(DRAFT)
+  country         String?
+  language        String?
+  genres          String[]          @default([])
+  posterUrl       String?
+  backdropUrl     String?
+  imdbRating      Float?
+  imdbVotes       Int?
+  imdbUrl         String?
+  isFeatured      Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  seasons         Season[]
+  episodes        Episode[]
 
-  @@id([animeId, genreId])
+  @@index([type, status, releaseYear])
+  @@index([title])
+}
+
+model Season {
+  id           String    @id @default(cuid())
+  contentId    String
+  seasonNumber Int
+  title        String?
+  content      Content   @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  episodes     Episode[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([contentId, seasonNumber])
+}
+
+model Episode {
+  id             String    @id @default(cuid())
+  imdbId         String?   @unique
+  seasonId       String
+  episodeNumber  Int
+  title          String
+  synopsis       String    @default("") @db.Text
+  runtimeMinutes Int?
+  releaseDate    DateTime?
+  embedUrl       String?
+  isPublished    Boolean   @default(false)
+  season         Season    @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([seasonId, episodeNumber])
+  @@index([isPublished, episodeNumber])
 }
 
 model WatchlistEntry {
   id        String   @id @default(cuid())
   userId    String
-  animeSlug String
+  contentId String
   createdAt DateTime @default(now())
 
-  @@unique([userId, animeSlug])
+  @@unique([userId, contentId])
   @@index([userId, createdAt])
 }
