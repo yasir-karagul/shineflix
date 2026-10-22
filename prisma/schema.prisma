@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Anime {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  titleEn     String
+  description String   @db.Text
+  year        Int
+  status      String
+  rating      Decimal? @db.Decimal(3, 1)
+  coverUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  genres      AnimeGenre[]
+}
+
+model Genre {
+  id    String       @id @default(cuid())
+  name  String       @unique
+  anime AnimeGenre[]
+}
+
+model AnimeGenre {
+  animeId String
+  genreId String
+  anime   Anime  @relation(fields: [animeId], references: [id], onDelete: Cascade)
+  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([animeId, genreId])
+}
+
+model WatchlistEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  animeSlug String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, animeSlug])
+  @@index([userId, createdAt])
+}
