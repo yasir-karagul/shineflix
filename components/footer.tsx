@@ -9,7 +9,7 @@ export function Footer({ lang = "en" }: { lang?: Language }) {
       <p>{ar ? "مساحة لاكتشاف الحكايات، لا لمشاركة محتوى غير مرخّص." : "A place to discover stories — not to distribute unlicensed content."}</p>
       <div className="footer-links">
         <Link href="/anime">{ar ? "الأنمي" : "Anime"}</Link><Link href="/movies">{ar ? "الأفلام" : "Movies"}</Link>
-        <Link href="/series">{ar ? "المسلسلات" : "TV Series"}</Link><Link href="/schedule">{ar ? "الجدول" : "Schedule"}</Link>
+        <Link href="/series">{ar ? "المسلسلات" : "TV Series"}</Link><Link href="/schedule">{ar ? "الجدول" : "Schedule"}</Link><Link href="/about">{ar ? "حول الموقع" : "About"}</Link>
       </div>
     </div>
     <div className="tmdb-attribution">
