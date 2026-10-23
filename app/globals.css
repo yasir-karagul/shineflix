@@ -115,3 +115,11 @@ html[lang="en"] .nav-link,html[lang="en"] .header-search,html[lang="en"] .button
 .tmdb-result small,.tmdb-result a{font-size:11px;color:var(--muted)}
 .tmdb-result a{color:#ff8291}
 @media(max-width:650px){.tmdb-attribution{padding-inline:16px}.tmdb-result{align-items:flex-start;flex-wrap:wrap}.tmdb-result>div{flex-basis:calc(100% - 80px)}.tmdb-result>.button{width:100%}.admin-stream-row,.admin-stream-form{grid-template-columns:1fr}.admin-stream-row .admin-checkbox,.admin-stream-row .admin-row-actions,.admin-stream-form h3,.admin-stream-form small,.admin-stream-form .button{grid-column:auto}.admin-stream-row .admin-row-actions{grid-row:auto}}
+
+.about-page{max-width:900px;margin-inline:auto}
+.about-card{padding:clamp(24px,5vw,50px);background:#141418;border:1px solid var(--line);border-radius:18px}
+.about-card h1{font-size:clamp(30px,5vw,46px);margin:10px 0 16px}
+.about-card p{max-width:740px;color:#c4bdc8;line-height:2;font-size:14px}
+.about-tmdb-logo{display:inline-flex;align-items:center;justify-content:center;background:#081c2d;border-radius:10px;padding:12px 18px;margin:12px 0}
+.about-tmdb-logo img{display:block;width:150px;max-height:70px;object-fit:contain}
+.tmdb-legal-notice{font-weight:700;color:#fff!important}
