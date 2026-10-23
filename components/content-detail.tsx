@@ -10,7 +10,7 @@ type DetailItem = {
   tmdbId: number | null; mediaType: "movie" | "tv" | null; alternativeTitles: string[];
   posterPath: string | null; backdropPath: string | null; logoPath: string | null; tmdbStatus: string | null;
   originalLanguage: string | null; voteAverage: number | null; voteCount: number | null;
-  originalTitle: string | null; synopsis: string; releaseYear: number | null; endYear: number | null;
+  originalTitle: string | null; synopsis: string; overview: string; releaseYear: number | null; endYear: number | null;
   genres: string[]; posterUrl: string | null;
   embedUrl: string | null; streamServers: Stream[];
   seasons: Array<{ id: string; seasonNumber: number; title: string | null; episodes: Array<{
@@ -48,7 +48,7 @@ export function ContentDetail({ item, lang = "en" }: { item: DetailItem; lang?: 
           {voteCount ? <span>{voteCount.toLocaleString(ar ? "ar" : "en-US")} {ar ? "مصوّتًا" : "votes"}</span> : null}
           {item.originalLanguage ? <span>{ar ? "اللغة الأصلية" : "Original language"}: {item.originalLanguage}</span> : null}
         </div>
-        <p className="detail-description">{item.synopsis}</p>
+        <p className="detail-description">{item.overview || item.synopsis}</p>
         <div className="detail-tags">{item.genres.map(genre => <span key={genre}>{genre}</span>)}</div>
         <div className="detail-actions">
           <FavoriteButton slug={item.slug} lang={lang}/><span>{ar ? "أضف العمل إلى قائمتك الشخصية" : "Save this title to your watchlist"}</span>
@@ -56,7 +56,7 @@ export function ContentDetail({ item, lang = "en" }: { item: DetailItem; lang?: 
         </div>
       </div>
     </section>
-    {item.type === "MOVIE" && movieSources.length ? <><AdSlot placement="PLAYER_BEFORE" /><section className="episode-library"><h2>{ar ? "مشاهدة الفيلم" : "Watch movie"} </h2><MultiServerPlayer sources={movieSources} title={item.title} lang={lang}/></section></> : null}
+    {movieSources.length ? <><AdSlot placement="PLAYER_BEFORE" /><section className="episode-library"><h2>{item.type === "MOVIE" ? (ar ? "مشاهدة الفيلم" : "Watch movie") : (ar ? "مشاهدة العمل" : "Watch title")}</h2><MultiServerPlayer sources={movieSources} title={item.title} lang={lang}/></section></> : null}
     {item.seasons.length ? <section className="episode-library"><h2>{ar ? "المواسم والحلقات" : "Seasons & episodes"}</h2>
       {item.seasons.map(season => <div className="episode-season" key={season.id}><h3>{season.title || (ar ? "الموسم " : "Season ") + season.seasonNumber}</h3>
         {season.episodes.map(episode => {
