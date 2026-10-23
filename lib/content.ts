@@ -1,10 +1,11 @@
 import type { ContentType } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { tmdbImageUrl, tmdbPageUrl } from "@/lib/tmdb-images";
 
 export async function getPublishedContent(type?: ContentType) {
   try {
     const rows = await prisma.content.findMany({
-      where: { status: "PUBLISHED", ...(type ? { type } : {}) },
+      where: { publicationStatus: "PUBLISHED", ...(type ? { type } : {}) },
       orderBy: [{ isFeatured: "desc" }, { updatedAt: "desc" }],
       take: 100
     });
@@ -16,16 +17,21 @@ export async function getPublishedContent(type?: ContentType) {
       year: row.releaseYear ?? 0,
       status: row.endYear ? "مكتمل" as const : "يعرض الآن" as const,
       genres: row.genres,
-      rating: row.imdbRating?.toFixed(1) ?? "—",
+      rating: row.voteAverage?.toFixed(1) ?? "—",
       episodes: row.type === "MOVIE" ? "فيلم" : row.type === "ANIME" ? "أنمي" : "مسلسل",
-      description: row.synopsis,
+      description: row.overview,
       accent: "#ef334f",
-      cover: row.posterUrl ? `url("${row.posterUrl}") center/cover no-repeat` : "linear-gradient(145deg,#24121f,#8d233e)",
+      cover: row.posterPath ? "url(\"" + (tmdbImageUrl(row.posterPath, "w500") ?? "") + "\") center/cover no-repeat" : "linear-gradient(145deg,#24121f,#8d233e)",
       featured: row.isFeatured,
       type: row.type,
-      posterUrl: row.posterUrl,
-      backdropUrl: row.backdropUrl,
-      imdbId: row.imdbId,
+      posterUrl: tmdbImageUrl(row.posterPath, "w500"),
+      backdropUrl: tmdbImageUrl(row.backdropPath, "w1280"),
+      logoUrl: tmdbImageUrl(row.logoPath, "original"),
+      tmdbId: row.tmdbId,
+      mediaType: row.mediaType,
+      tmdbUrl: tmdbPageUrl(row.tmdbId, row.mediaType),
+      originalLanguage: row.originalLanguage,
+      alternativeTitles: row.alternativeTitles,
       createdAt: row.createdAt.toISOString(),
       updatedAt: row.updatedAt.toISOString()
     }));
@@ -43,7 +49,7 @@ export async function getLatestEpisodes(take = 8) {
         season: {
           is: {
             content: {
-              is: { status: "PUBLISHED", type: "ANIME" }
+              is: { publicationStatus: "PUBLISHED", type: "ANIME" }
             }
           }
         }
@@ -63,13 +69,8 @@ export async function getLatestEpisodes(take = 8) {
             seasonNumber: true,
             content: {
               select: {
-                slug: true,
-                title: true,
-                originalTitle: true,
-                posterUrl: true,
-                backdropUrl: true,
-                releaseYear: true,
-                imdbRating: true
+                slug: true, title: true, originalTitle: true, posterPath: true,
+                backdropPath: true, releaseYear: true, voteAverage: true
               }
             }
           }

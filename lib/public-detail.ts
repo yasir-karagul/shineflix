@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 export async function getPublicDetail(slug: string, type?: ContentType) {
   try {
     return await prisma.content.findFirst({
-      where: { slug, status: "PUBLISHED", ...(type ? { type } : {}) },
+      where: { slug, publicationStatus: "PUBLISHED", ...(type ? { type } : {}) },
       include: {
         seasons: {
           orderBy: { seasonNumber: "asc" },
