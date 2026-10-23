@@ -95,16 +95,19 @@ export function AdminDashboard({ initialItems, databaseReady, lang = "en" }: { i
   }
 
   function applyMetadata(item: TmdbMetadata) {
-    setEditing(null);
+    const existing = items.find(candidate => candidate.tmdbId === item.tmdbId && candidate.mediaType === item.mediaType) ?? null;
+    setEditing(existing);
     setF({
-      tmdbId: String(item.tmdbId), mediaType: item.mediaType, slug: slugify(item.title), type: item.type,
+      tmdbId: String(item.tmdbId), mediaType: item.mediaType, slug: existing?.slug ?? slugify(item.title),
+      type: existing?.type ?? item.type,
       title: item.title, originalTitle: item.originalTitle, alternativeTitles: item.alternativeTitles.join("\n"),
       overview: item.overview, releaseYear: item.releaseYear?.toString() ?? "", endYear: item.endYear?.toString() ?? "",
-      runtimeMinutes: item.runtimeMinutes?.toString() ?? "", tmdbStatus: item.status ?? "", publicationStatus: "DRAFT",
+      runtimeMinutes: item.runtimeMinutes?.toString() ?? "", tmdbStatus: item.status ?? "",
+      publicationStatus: existing?.publicationStatus ?? "DRAFT",
       country: item.country ?? "", originalLanguage: item.originalLanguage ?? "", genres: item.genres.join(", "),
       posterPath: item.posterPath ?? "", backdropPath: item.backdropPath ?? "", logoPath: item.logoPath ?? "",
       voteAverage: item.voteAverage?.toString() ?? "", voteCount: item.voteCount?.toString() ?? "",
-      embedUrl: "", isFeatured: false
+      embedUrl: existing?.embedUrl ?? "", isFeatured: existing?.isFeatured ?? false
     });
     setResults([]);
     setError("");
