@@ -83,18 +83,18 @@ const copy = {
   }
 } satisfies Record<Language, Record<string, string>>;
 
-const mainSiteUrl = (import.meta.env.VITE_MAIN_SITE_URL || "https://shineflix.vercel.app").trim();
+const mainSiteUrl = (import.meta.env.VITE_MAIN_SITE_URL || "https://shineflix-yorion.vercel.app").trim();
 
 function getMainSiteHref(lang: Language): string {
   try {
     const url = new URL(mainSiteUrl);
     if (url.protocol !== "https:" && url.hostname !== "localhost") {
-      return "https://shineflix.vercel.app/?lang=" + lang;
+      return "https://shineflix-yorion.vercel.app/?lang=" + lang;
     }
     url.searchParams.set("lang", lang);
     return url.toString();
   } catch {
-    return "https://shineflix.vercel.app/?lang=" + lang;
+    return "https://shineflix-yorion.vercel.app/?lang=" + lang;
   }
 }
 
