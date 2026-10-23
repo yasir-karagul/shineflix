@@ -7,7 +7,7 @@ This is an independent, bilingual landing site for Shineflix. It follows the sam
 1. Import the `yasir-karagul/shineflix` GitHub repository as a **new** Vercel project.
 2. Set **Root Directory** to `redirect-site`.
 3. Use the Vite framework preset, build command `npm run build`, and output directory `dist`.
-4. Set `VITE_MAIN_SITE_URL` to the production origin of the main Shineflix site (for example, `https://shineflix.vercel.app`) in Production, Preview, and Development.
+4. Set `VITE_MAIN_SITE_URL` to the production origin of the main Shineflix site (for example, `https://shineflix-yorion.vercel.app`) in Production, Preview, and Development.
 5. Deploy the project and assign a redirect-site domain to this project only.
 
 Do not connect the redirect project to Neon. It has no database, admin login, IMDb credentials, or main-site environment secrets.
