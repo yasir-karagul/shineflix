@@ -78,3 +78,7 @@
 .redirect-card .redirect-small{font-size:12px}
 html[lang="en"] body{font-family:"Manrope","IBM Plex Sans Arabic",sans-serif}
 html[lang="en"] .nav-link,html[lang="en"] .header-search,html[lang="en"] .button,html[lang="en"] input,html[lang="en"] select,html[lang="en"] textarea{letter-spacing:0}
+
+.language-switch{appearance:none;border:1px solid var(--line);background:#17171c;color:var(--text);border-radius:999px;padding:7px 12px;font:inherit;font-size:12px;font-weight:700;white-space:nowrap;transition:border-color .2s ease,background .2s ease}
+.language-switch:hover{border-color:var(--red);background:#24151b}
+.redirect-language{align-self:flex-end;margin-bottom:-6px}
