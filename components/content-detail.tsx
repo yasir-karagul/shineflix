@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FavoriteButton } from "@/components/favorite-button";
+import { AdSlot } from "@/components/ad-slot";
 
 type DetailItem = {
   id: string; slug: string; type: "MOVIE" | "SERIES" | "ANIME"; title: string;
@@ -34,7 +35,7 @@ export function ContentDetail({ item }: { item: DetailItem }) {
         <div className="detail-actions"><FavoriteButton slug={item.slug}/><span>أضف العمل إلى قائمتك الشخصية</span>{item.imdbUrl ? <a href={item.imdbUrl} target="_blank" rel="noreferrer">صفحة IMDb ↗</a> : null}</div>
       </div>
     </section>
-    {item.type === "MOVIE" && item.embedUrl ? <section className="episode-library"><h2>مشاهدة الفيلم</h2><div className="embed-frame"><iframe src={item.embedUrl} title={item.title} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-presentation" allow="fullscreen; picture-in-picture" allowFullScreen /></div></section> : null}
+    {item.type === "MOVIE" && item.embedUrl ? <><AdSlot placement="PLAYER_BEFORE" /><section className="episode-library"><h2>مشاهدة الفيلم</h2><div className="embed-frame"><iframe src={item.embedUrl} title={item.title} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-presentation" allow="fullscreen; picture-in-picture" allowFullScreen /></div></section></> : null}
     {item.seasons.length ? <section className="episode-library"><h2>المواسم والحلقات</h2>
       {item.seasons.map(season => <div className="episode-season" key={season.id}><h3>{season.title || "الموسم " + season.seasonNumber}</h3>
         {season.episodes.map(episode => <article className="episode-card" key={episode.id}><div><strong>{episode.episodeNumber}. {episode.title}</strong>{episode.synopsis ? <p>{episode.synopsis}</p> : null}</div>
@@ -42,6 +43,7 @@ export function ContentDetail({ item }: { item: DetailItem }) {
         </article>)}
       </div>)}
     </section> : null}
+    <AdSlot placement="DETAIL_BOTTOM" />
     <p className="detail-disclaimer">تُعرض روابط المشغّلات التي يضيفها مدير الموقع فقط. يجب أن يكون مصدر الفيديو مرخّصًا ويسمح بالتضمين.</p>
   </div>;
 }
