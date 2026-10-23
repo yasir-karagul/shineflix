@@ -111,7 +111,7 @@ function setLanguage(lang: Language): void {
   const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
   if (description) description.content = text.description;
 
-  Object.entries({
+  for (const [id, value] of Object.entries({
     "site-label": text.siteLabel,
     "nav-cta": text.navCta,
     "hero-eyebrow": text.heroEyebrow,
