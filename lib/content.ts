@@ -18,7 +18,7 @@ export async function getPublishedContent(type?: ContentType) {
       genres: row.genres,
       rating: row.voteAverage?.toFixed(1) ?? "—",
       episodes: row.type === "MOVIE" ? "فيلم" : row.type === "ANIME" ? "أنمي" : "مسلسل",
-      description: row.synopsis,
+      description: row.overview || row.synopsis,
       accent: "#ef334f",
       cover: row.posterUrl ? `url("${row.posterUrl}") center/cover no-repeat` : "linear-gradient(145deg,#24121f,#8d233e)",
       featured: row.isFeatured,
