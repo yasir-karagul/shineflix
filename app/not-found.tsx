@@ -1,2 +1,3 @@
 import Link from "next/link";
-export default function NotFound(){return <div className="page-shell not-found"><span className="eyebrow">404 · صفحة غير موجودة</span><h1>يبدو أن هذه <span>الحكاية ضاعت.</span></h1><p>الرابط الذي تبحث عنه غير متاح أو تم نقله.</p><Link className="button button-primary" href="/anime">العودة إلى المكتبة ←</Link></div>}
+import { getLanguage } from "@/lib/i18n";
+export default async function NotFound(){const lang=await getLanguage();const ar=lang==="ar";return <div className="page-shell not-found"><span className="eyebrow">404 · {ar?"صفحة غير موجودة":"Page not found"}</span><h1>{ar?<>يبدو أن هذه <span>الحكاية ضاعت.</span></>:<>Looks like this <span>story got lost.</span></>}</h1><p>{ar?"الرابط الذي تبحث عنه غير متاح أو تم نقله.":"The page you're looking for may have moved or is no longer available."}</p><Link className="button button-primary" href="/anime">{ar?"العودة إلى المكتبة ←":"Back to the library →"}</Link></div>}
