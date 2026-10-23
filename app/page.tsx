@@ -112,7 +112,7 @@ export default async function HomePage() {
           lang={lang}
           eyebrow={ar ? "اختيارات تستحق وقتك" : "Worth your time"}
           title={ar ? "أعلى الأنميات تقييمًا" : "Top-rated anime"}
-          description={ar ? "رتّبنا الأعمال حسب تقييم IMDb المتاح في بيانات المكتبة." : "Anime ranked by the IMDb ratings available in your catalogue."}
+          description={ar ? "يعتمد الترتيب على تقييمات TMDB المتاحة في بيانات المكتبة." : "Ranked by the TMDB ratings available in your catalogue."}
           href="/anime"
           linkLabel={ar ? "كل الأنمي" : "All anime"}
         />
@@ -142,7 +142,7 @@ export default async function HomePage() {
           <div className={styles.episodeGrid}>
             {latestEpisodes.map(episode => {
               const item = episode.season.content;
-              const rating = item.imdbRating?.toFixed(1);
+              const rating = (item.voteAverage ?? item.imdbRating)?.toFixed(1);
               const posterStyle = item.posterUrl ? { backgroundImage: `url("${item.posterUrl}")` } : undefined;
               return (
                 <Link href={`/anime/${item.slug}`} key={episode.id} className={styles.episodeCard}>
