@@ -13,7 +13,7 @@ type Item = {
   id: string; tmdbId: number | null; mediaType: MediaType | null; alternativeTitles: string[];
   posterPath: string | null; backdropPath: string | null; logoPath: string | null; tmdbStatus: string | null;
   originalLanguage: string | null; voteAverage: number | null; voteCount: number | null;
-  slug: string; type: ContentType; title: string; originalTitle: string | null; synopsis: string;
+  slug: string; type: ContentType; title: string; originalTitle: string | null; synopsis: string; overview: string;
   releaseYear: number | null; endYear: number | null; genres: string[]; posterUrl: string | null;
   backdropUrl: string | null; embedUrl: string | null; status: ContentStatus; isFeatured: boolean; seasons?: Season[];
 };
@@ -86,7 +86,7 @@ export function AdminDashboard({ initialItems, databaseReady, lang = "en" }: { i
       backdropPath: item.backdropPath ?? "", logoPath: item.logoPath ?? "", tmdbStatus: item.tmdbStatus ?? "",
       originalLanguage: item.originalLanguage ?? "", voteAverage: item.voteAverage?.toString() ?? "",
       voteCount: item.voteCount?.toString() ?? "", slug: item.slug, type: item.type, title: item.title,
-      originalTitle: item.originalTitle ?? "", synopsis: item.synopsis, releaseYear: item.releaseYear?.toString() ?? "",
+      originalTitle: item.originalTitle ?? "", synopsis: item.overview || item.synopsis, releaseYear: item.releaseYear?.toString() ?? "",
       endYear: item.endYear?.toString() ?? "", genres: item.genres.join(", "), posterUrl: item.posterUrl ?? "",
       backdropUrl: item.backdropUrl ?? "", status: item.status, isFeatured: item.isFeatured
     });
@@ -134,6 +134,7 @@ export function AdminDashboard({ initialItems, databaseReady, lang = "en" }: { i
       posterUrl: f.posterUrl || tmdbImageUrl(f.posterPath, "w500") || null,
       backdropUrl: f.backdropUrl || tmdbImageUrl(f.backdropPath, "w1280") || null,
       originalTitle: f.originalTitle || null, synopsis: f.synopsis || "",
+      overview: f.synopsis || "",
       embedUrl: editing?.embedUrl ?? null
     };
     try {
