@@ -83,8 +83,8 @@ export async function searchImdbTitles(query: string): Promise<ImdbTitle[]> {
     Method: "POST",
     Path: graphqlPath,
     RequestHeaders: {
-      "content-type": ["application/json"],
-      "x-api-key": [required("IMDB_API_KEY")]
+      "content-type": "application/json",
+      "x-api-key": required("IMDB_API_KEY")
     },
     Body: new TextEncoder().encode(payload)
   }));
