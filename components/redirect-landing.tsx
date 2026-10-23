@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import type { Language } from "@/lib/i18n";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export function RedirectLanding({lang,target}:{lang:Language;target:string}) {
   const ar=lang==="ar";
@@ -10,6 +11,7 @@ export function RedirectLanding({lang,target}:{lang:Language;target:string}) {
   },[target]);
   return <main className="page-shell redirect-page">
     <section className="redirect-card">
+      <div className="redirect-language"><LanguageSwitcher lang={lang}/></div>
       <span className="brand-mark">S<span>✦</span></span>
       <span className="eyebrow">{ar?"وجهتك إلى Shineflix":"YOUR SHINEFLIX DESTINATION"}</span>
       <h1>{ar?<>أنت على بُعد خطوة من <span>Shineflix.</span></>:<>You're one step away from <span>Shineflix.</span></>}</h1>
