@@ -80,6 +80,7 @@ export function AdminDashboard({ initialItems, databaseReady, lang = "en" }: { i
   function fresh() { ED(null); F({ ...empty }); TR(null); TI(""); E(""); }
   function edit(item: Item) {
     ED(item);
+    LT(item.type);
     F({
       tmdbId: item.tmdbId?.toString() ?? "", mediaType: item.mediaType ?? "tv",
       alternativeTitles: (item.alternativeTitles ?? []).join("\n"), posterPath: item.posterPath ?? "",
@@ -93,7 +94,7 @@ export function AdminDashboard({ initialItems, databaseReady, lang = "en" }: { i
     TR(null); E("");
   }
   function applyTmdb(item: TmdbResult) {
-    const nextType: ContentType = item.mediaType === "movie" ? "MOVIE" : (editing?.type === "ANIME" || lookupType === "ANIME" ? "ANIME" : "SERIES");
+    const nextType: ContentType = item.mediaType === "movie" ? "MOVIE" : lookupType;
     F(current => ({
       ...current, tmdbId: String(item.tmdbId), mediaType: item.mediaType,
       alternativeTitles: item.alternativeTitles.join("\n"), posterPath: item.posterPath ?? "",
