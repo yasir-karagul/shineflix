@@ -33,6 +33,11 @@ enum PublicationStatus {
   ARCHIVED
 }
 
+enum TmdbMediaType {
+  movie
+  tv
+}
+
 model Ad {
   id          String      @id @default(cuid())
   title       String
@@ -55,7 +60,7 @@ model Content {
   id              String            @id @default(cuid())
   imdbId          String?           @unique // Legacy IMDb field retained for existing rows; new imports use TMDB.
   tmdbId          Int?
-  mediaType       String?
+  mediaType       TmdbMediaType?
   alternativeTitles String[]         @default([])
   posterPath      String?
   backdropPath    String?
