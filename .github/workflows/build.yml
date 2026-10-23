@@ -24,5 +24,11 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm install
-      - name: Build
+      - name: Build main site
+        run: npm run build
+      - name: Install redirect-site dependencies
+        working-directory: redirect-site
+        run: npm install
+      - name: Build redirect site
+        working-directory: redirect-site
         run: npm run build
