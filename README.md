@@ -40,7 +40,7 @@ Create a title, add seasons, then add episodes to the chosen season. Every title
 
 ## Deployment
 
-Set `NEXT_PUBLIC_SITE_URL` to the canonical production origin. Configure `DATABASE_URL`, admin credentials, and any optional IMDb credentials in the hosting provider. Run the Prisma schema setup before using the CMS. Google indexing requires a deployed public domain and Search Console verification; sitemap submission does not guarantee indexing.
+Set `NEXT_PUBLIC_SITE_URL` to the canonical production origin. Configure `DATABASE_URL`, admin credentials, and `TMDB_ACCESS_TOKEN` (or `TMDB_API_KEY`) in the hosting provider. Run the Prisma schema setup before using the CMS. Google indexing requires a deployed public domain and Search Console verification; sitemap submission does not guarantee indexing.
 
 
 ## Advertising manager
