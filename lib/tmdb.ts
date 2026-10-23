@@ -1,5 +1,4 @@
 export type TmdbMediaType = "movie" | "tv";
-export type ShineflixContentType = "MOVIE" | "SERIES" | "ANIME";
 
 type TmdbImage = { file_path?: string; iso_639_1?: string | null; vote_average?: number };
 type TmdbDetails = {
