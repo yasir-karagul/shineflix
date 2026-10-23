@@ -7,7 +7,7 @@ export async function GET(req: Request) {
   const params = new URL(req.url).searchParams;
   const rawId = params.get("tmdbId")?.trim() ?? "";
   const mediaType = params.get("mediaType");
-  if (!/^\d{1,10}$/.test(rawId) || Number(rawId) < 1) {
+  if (!/^\d{1,10}$/.test(rawId) || Number(rawId) < 1 || Number(rawId) > 2147483647) {
     return NextResponse.json({ error: "Enter a valid numeric TMDB ID." }, { status: 400 });
   }
   if (mediaType !== "movie" && mediaType !== "tv") {
