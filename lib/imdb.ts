@@ -83,14 +83,14 @@ export async function searchImdbTitles(query: string): Promise<ImdbTitle[]> {
     Method: "POST",
     Path: graphqlPath,
     RequestHeaders: {
-      "content-type": ["application/json"],
-      "x-api-key": [required("IMDB_API_KEY")]
+      "content-type": "application/json",
+      "x-api-key": required("IMDB_API_KEY")
     },
-    Body: new TextEncoder().encode(payload)
+    Body: payload
   }));
 
   if (!result.Body) throw new Error("لم يُرجع IMDb بيانات. تحقق من صلاحية مجموعة البيانات وGraphQL path.");
-  const bodyText = new TextDecoder().decode(result.Body);
+  const bodyText = result.Body;
   let body: ImdbSearchResponse;
   try {
     body = JSON.parse(bodyText) as ImdbSearchResponse;

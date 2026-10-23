@@ -19,6 +19,5 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const lang = await getLanguage();
-  const redirectOnly = process.env.REDIRECT_SITE_MODE === "true";
-  return <html lang={lang} dir={localeDirection(lang)}><body>{redirectOnly ? children : <><Header lang={lang} /><AdSlot placement="SITE_TOP" />{children}<Footer lang={lang} /></>}</body></html>;
+  return <html lang={lang} dir={localeDirection(lang)}><body><Header lang={lang} /><AdSlot placement="SITE_TOP" />{children}<Footer lang={lang} /></body></html>;
 }
