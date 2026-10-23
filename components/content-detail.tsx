@@ -34,7 +34,7 @@ export function ContentDetail({ item, lang = "en" }: { item: DetailItem; lang?: 
         <div className="detail-meta"><span>{ar ? (item.endYear ? "مكتمل" : "متاح") : (item.endYear ? "Completed" : "Available")}</span><span>{item.releaseYear ?? "—"}</span><span>★ {rating}</span>{item.imdbVotes ? <span>{item.imdbVotes.toLocaleString(lang === "ar" ? "ar" : "en-US")} {ar ? "تقييمًا" : "votes"}</span> : null}</div>
         <p className="detail-description">{item.synopsis}</p>
         <div className="detail-tags">{item.genres.map(genre => <span key={genre}>{genre}</span>)}</div>
-        <div className="detail-actions"><FavoriteButton slug={item.slug}/><span>{ar ? "أضف العمل إلى قائمتك الشخصية" : "Save this title to your watchlist"}</span>{item.imdbUrl ? <a href={item.imdbUrl} target="_blank" rel="noreferrer">صفحة IMDb ↗</a> : null}</div>
+        <div className="detail-actions"><FavoriteButton slug={item.slug} lang={lang}/><span>{ar ? "أضف العمل إلى قائمتك الشخصية" : "Save this title to your watchlist"}</span>{item.imdbUrl ? <a href={item.imdbUrl} target="_blank" rel="noreferrer">{ar ? "صفحة IMDb ↗" : "IMDb page ↗"}</a> : null}</div>
       </div>
     </section>
     {item.type === "MOVIE" && item.embedUrl ? <><AdSlot placement="PLAYER_BEFORE" /><section className="episode-library"><h2>{ar ? "مشاهدة الفيلم" : "Watch movie"}</h2><div className="embed-frame"><iframe src={item.embedUrl} title={item.title} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-presentation" allow="fullscreen; picture-in-picture" allowFullScreen /></div></section></> : null}
