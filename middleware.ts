@@ -14,6 +14,19 @@ export function middleware(request: NextRequest) {
     });
     return response;
   }
+
+  const redirectMode = process.env.REDIRECT_SITE_MODE === "true";
+  const mainSiteConfigured = Boolean(process.env.NEXT_PUBLIC_MAIN_SITE_URL?.trim());
+  const path = request.nextUrl.pathname;
+  const allowedRedirectPaths = ["/", "/redirect"];
+  if (redirectMode && mainSiteConfigured && !allowedRedirectPaths.includes(path)) {
+    const lang = request.cookies.get("shineflix_locale")?.value === "ar" ? "ar" : "en";
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    url.search = "";
+    url.searchParams.set("lang", lang);
+    return NextResponse.redirect(url);
+  }
   return NextResponse.next();
 }
 
