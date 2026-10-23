@@ -7,7 +7,7 @@ English-first bilingual media catalogue built with Next.js, TypeScript, Prisma, 
 - English-default bilingual catalogue for anime, movies, and TV series, with Arabic RTL support and a persistent language choice.
 - Admin CMS at `/admin`, protected by a signed, HTTP-only session cookie.
 - Create, edit, publish, archive, and delete content records.
-- Search licensed IMDb metadata, select a result, review it, then save it to the database.
+- Import title metadata by TMDB ID through the official TMDB API; review it, then save it to the database.
 - Manage seasons and episodes; episode embeds are unpublished by default and are displayed only when published.
 - SEO metadata, sitemap, and robots rules.
 
@@ -36,7 +36,7 @@ TMDB requires attribution in the application, including an approved TMDB logo an
 
 ## Seasons, episodes, and embeds
 
-Create a title, add seasons, then add episodes to the chosen season. Use only video URLs that you own or are explicitly authorized to embed. An embed URL does not grant streaming or redistribution rights. Episodes should remain unpublished until the rights and URL have been checked. You can configure additional permitted HTTPS player hostnames with `EMBED_ALLOWED_HOSTS` (comma-separated); YouTube and Vimeo player hosts are allowed by default.
+Create a title, add seasons, then add episodes to the chosen season. Every title and episode can have multiple named streaming servers, each with an HTTPS embed URL, display order, and active/inactive state. Visitors can switch between active servers in the player. Older single `embedUrl` entries remain as a compatibility fallback until they are saved into the new server manager. Use only video URLs that you own or are explicitly authorized to embed. An embed URL does not grant streaming or redistribution rights. Episodes should remain unpublished until the rights and URL have been checked. Configure additional permitted HTTPS player hostnames with `EMBED_ALLOWED_HOSTS` (comma-separated); YouTube and Vimeo player hosts are allowed by default. After pulling a schema change, run `npm run db:push` against the intended Neon database to add the TMDB metadata and `StreamServer` table before deploying the application code.
 
 ## Deployment
 
