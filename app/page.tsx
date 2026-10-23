@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdSlot } from "@/components/ad-slot";
 
 const features = [
   { icon: "⌕", title: "اكتشف بسهولة", text: "ابحث عن الأعمال واستكشفها حسب التصنيف والحالة بدلًا من التنقل العشوائي." },
@@ -50,6 +51,7 @@ export default function HomePage() {
       </div>
     </section>
 
+    <AdSlot placement="HOME_INLINE" />
     <section className="landing-cta page-shell">
       <div className="landing-cta-panel">
         <div><span className="eyebrow">ابدأ الاستكشاف</span><h2>العالم التالي ينتظرك.</h2><p>افتح مكتبة Shineflix واعثر على أنمي جديد تضيفه إلى قائمتك.</p></div>
