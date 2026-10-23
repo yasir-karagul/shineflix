@@ -24,8 +24,58 @@ export async function getPublishedContent(type?: ContentType) {
       featured: row.isFeatured,
       type: row.type,
       posterUrl: row.posterUrl,
-      imdbId: row.imdbId
+      backdropUrl: row.backdropUrl,
+      imdbId: row.imdbId,
+      createdAt: row.createdAt.toISOString(),
+      updatedAt: row.updatedAt.toISOString()
     }));
+  } catch {
+    return [];
+  }
+}
+
+export async function getLatestEpisodes(take = 8) {
+  try {
+    const safeTake = Math.max(1, Math.min(Math.floor(take), 12));
+    return await prisma.episode.findMany({
+      where: {
+        isPublished: true,
+        season: {
+          is: {
+            content: {
+              is: { status: "PUBLISHED", type: "ANIME" }
+            }
+          }
+        }
+      },
+      orderBy: [
+        { releaseDate: { sort: "desc", nulls: "last" } },
+        { updatedAt: "desc" }
+      ],
+      take: safeTake,
+      select: {
+        id: true,
+        episodeNumber: true,
+        title: true,
+        releaseDate: true,
+        season: {
+          select: {
+            seasonNumber: true,
+            content: {
+              select: {
+                slug: true,
+                title: true,
+                originalTitle: true,
+                posterUrl: true,
+                backdropUrl: true,
+                releaseYear: true,
+                imdbRating: true
+              }
+            }
+          }
+        }
+      }
+    });
   } catch {
     return [];
   }
