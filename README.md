@@ -1,10 +1,10 @@
 # Shineflix
 
-Arabic-first media catalogue built with Next.js, TypeScript, Prisma, and PostgreSQL.
+English-first bilingual media catalogue built with Next.js, TypeScript, Prisma, and PostgreSQL.
 
 ## Features
 
-- Arabic RTL responsive catalogue for anime, movies, and TV series.
+- English-default bilingual catalogue for anime, movies, and TV series, with Arabic RTL support and a persistent language choice.
 - Admin CMS at `/admin`, protected by a signed, HTTP-only session cookie.
 - Create, edit, publish, archive, and delete content records.
 - Search licensed IMDb metadata, select a result, review it, then save it to the database.
@@ -44,3 +44,8 @@ Set `NEXT_PUBLIC_SITE_URL` to the canonical production origin. Configure `DATABA
 ## Advertising manager
 
 Open `/admin/ads` after signing in to manage ads. Supported formats are text links, image banners, and HTML/JavaScript snippets rendered in a sandboxed iframe without same-origin access. Placements include the site-wide top banner, homepage inline area, before the movie player, and below title details. Ads can be enabled/disabled and scheduled with start/end times. Run `npm run db:push` after updating the Prisma schema. Only use ad-network code and destination URLs you trust; sandboxing reduces access to the Shineflix page but does not make a malicious ad provider safe.
+
+
+## Languages and redirect page
+
+English is the default language. The language switcher stores the selection in the `shineflix_locale` cookie and switches between LTR English and RTL Arabic across the public site and admin pages. The same repo includes a bilingual `/redirect` landing page for use as a branded forwarding site. Set `NEXT_PUBLIC_MAIN_SITE_URL` to the canonical main-site URL when deploying the redirect instance separately. The redirect page is marked `noindex,nofollow`; it's intended to forward visitors rather than compete with the main site in search results. A `?lang=en` or `?lang=ar` query on arrival is persisted by the middleware.
