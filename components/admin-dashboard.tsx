@@ -15,8 +15,7 @@ type Item = {
   originalLanguage: string | null; voteAverage: number | null; voteCount: number | null;
   slug: string; type: ContentType; title: string; originalTitle: string | null; synopsis: string;
   releaseYear: number | null; endYear: number | null; genres: string[]; posterUrl: string | null;
-  backdropUrl: string | null; imdbRating: number | null; imdbVotes: number | null; imdbId: string | null;
-  imdbUrl: string | null; embedUrl: string | null; status: ContentStatus; isFeatured: boolean; seasons?: Season[];
+  backdropUrl: string | null; embedUrl: string | null; status: ContentStatus; isFeatured: boolean; seasons?: Season[];
 };
 type TmdbResult = {
   tmdbId: number; mediaType: MediaType; suggestedType: ContentType; title: string; originalTitle: string;
