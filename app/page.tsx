@@ -1,6 +1,11 @@
 import Link from "next/link";
+import { RedirectLanding } from "@/components/redirect-landing";
 import { AdSlot } from "@/components/ad-slot";
-import { getLanguage } from "@/lib/i18n";
+import { getLanguage, getMainSiteTarget } from "@/lib/i18n";
+export const metadata: Metadata = process.env.REDIRECT_SITE_MODE === "true"
+  ? { title: "Shineflix — Official Redirect", robots: { index: false, follow: false } }
+  : { title: "Home | Shineflix", description: "Discover anime, movies and TV series on Shineflix." };
+
 const features = {
   en: [
     { icon: "⌕", title: "Discover with ease", text: "Search stories and explore by genre or release status." },
@@ -18,6 +23,9 @@ const features = {
 export default async function HomePage() {
   const lang = await getLanguage();
   const ar = lang === "ar";
+  if (process.env.REDIRECT_SITE_MODE === "true") {
+    return <RedirectLanding lang={lang} target={getMainSiteTarget(lang)} />;
+  }
   return <div className="landing-page">
     <section className="landing-hero page-shell">
       <div className="landing-copy">
