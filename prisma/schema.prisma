@@ -69,6 +69,7 @@ model Content {
   title           String
   originalTitle   String?
   synopsis        String            @default("") @db.Text
+  overview        String            @default("") @db.Text
   releaseYear     Int?
   endYear         Int?
   runtimeMinutes  Int?
