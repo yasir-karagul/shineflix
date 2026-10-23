@@ -16,7 +16,7 @@ export async function getPublishedContent(type?: ContentType) {
       year: row.releaseYear ?? 0,
       status: row.endYear ? "مكتمل" as const : "يعرض الآن" as const,
       genres: row.genres,
-      rating: row.imdbRating?.toFixed(1) ?? "—",
+      rating: (row.voteAverage ?? row.imdbRating)?.toFixed(1) ?? "—",
       episodes: row.type === "MOVIE" ? "فيلم" : row.type === "ANIME" ? "أنمي" : "مسلسل",
       description: row.synopsis,
       accent: "#ef334f",
@@ -25,6 +25,10 @@ export async function getPublishedContent(type?: ContentType) {
       type: row.type,
       posterUrl: row.posterUrl,
       backdropUrl: row.backdropUrl,
+      tmdbId: row.tmdbId,
+      mediaType: row.mediaType,
+      voteAverage: row.voteAverage,
+      voteCount: row.voteCount,
       imdbId: row.imdbId,
       createdAt: row.createdAt.toISOString(),
       updatedAt: row.updatedAt.toISOString()
@@ -69,7 +73,8 @@ export async function getLatestEpisodes(take = 8) {
                 posterUrl: true,
                 backdropUrl: true,
                 releaseYear: true,
-                imdbRating: true
+                imdbRating: true,
+                voteAverage: true
               }
             }
           }
