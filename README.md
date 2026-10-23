@@ -52,7 +52,7 @@ Open `/admin/ads` after signing in to manage ads. Supported formats are text lin
 
 English is the default language. The main site language switcher stores the selection in the `shineflix_locale` cookie and supports left-to-right English and right-to-left Arabic. The main Shineflix application has no redirect-only runtime mode or embedded redirect landing page.
 
-The standalone destination site lives in `redirect-site/` and is deployed as a **separate Vercel project** connected to this repository with Root Directory set to `redirect-site`. Configure `VITE_MAIN_SITE_URL` in that project to point to the main Shineflix production origin. The redirect site is a static Vite app: it has its own deployment URL/domain and does not use the main site's database, Prisma, admin credentials, IMDb access, or ads configuration. See [redirect-site/README.md](redirect-site/README.md) for setup instructions.
+The standalone destination site lives in `redirect-site/` and is deployed as a **separate Vercel project** connected to this repository with Root Directory set to `redirect-site`. Configure `VITE_MAIN_SITE_URL` in that project to point to the main Shineflix production origin. The redirect site is a static Vite app: it has its own deployment URL/domain and does not use the main site's database, Prisma, admin credentials, TMDB credentials, or ads configuration. See [redirect-site/README.md](redirect-site/README.md) for setup instructions.
 
 ## Neon PostgreSQL / Prisma 6
 
