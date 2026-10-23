@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { RedirectLanding } from "@/components/redirect-landing";
 import { AdSlot } from "@/components/ad-slot";
 import { getLanguage, getMainSiteTarget } from "@/lib/i18n";
 export const metadata: Metadata = process.env.REDIRECT_SITE_MODE === "true"
-  ? { title: "Shineflix — Official Redirect", robots: { index: false, follow: false } }
-  : { title: "Home | Shineflix", description: "Discover anime, movies and TV series on Shineflix." };
+  ? { title: "Official Redirect", robots: { index: false, follow: false } }
+  : { title: "Home", description: "Discover anime, movies and TV series on Shineflix." };
 
 const features = {
   en: [
