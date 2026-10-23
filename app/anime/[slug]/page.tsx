@@ -9,7 +9,6 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const lang = await getLanguage();
   const item = await getPublicDetail(slug, "ANIME");
   return { title: item?.title ?? "العنوان غير موجود", description: item?.synopsis ?? undefined, robots: item ? undefined : { index: false, follow: false } };
 }
