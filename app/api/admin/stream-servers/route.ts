@@ -9,7 +9,7 @@ const schema = z.object({
   episodeId: z.string().min(1).optional().nullable(),
   name: z.string().trim().min(1).max(100),
   url: z.string().url().max(2000).refine(isAllowedEmbedUrl, "رابط المشغّل غير مسموح به. استخدم HTTPS ومضيفًا مسموحًا."),
-  sortOrder: z.number().int().min(0).max(1000).default(0),
+  sortOrder: z.number().int().min(0).max(1000).optional(),
   isActive: z.boolean().default(true)
 }).superRefine((value, ctx) => {
   if (Boolean(value.contentId) === Boolean(value.episodeId)) {
@@ -45,13 +45,22 @@ export async function POST(req: Request) {
       where: parsed.data.contentId ? { contentId: parsed.data.contentId } : { episodeId: parsed.data.episodeId! },
       select: { sortOrder: true }
     });
-    const server = await prisma.streamServer.create({
-      data: {
-        ...parsed.data,
-        contentId: parsed.data.contentId || null,
-        episodeId: parsed.data.episodeId || null,
-        sortOrder: parsed.data.sortOrder ?? (servers.length ? Math.max(...servers.map(s => s.sortOrder)) + 1 : 0)
+    const server = await prisma.$transaction(async tx => {
+      const created = await tx.streamServer.create({
+        data: {
+          ...parsed.data,
+          contentId: parsed.data.contentId || null,
+          episodeId: parsed.data.episodeId || null,
+          sortOrder: parsed.data.sortOrder ?? (servers.length ? Math.max(...servers.map(s => s.sortOrder)) + 1 : 0)
+        }
+      });
+      // Once a legacy single URL is migrated into the StreamServer table, don't let it bypass server activation controls.
+      if (parsed.data.contentId) {
+        await tx.content.update({ where: { id: parsed.data.contentId }, data: { embedUrl: null } });
+      } else if (parsed.data.episodeId) {
+        await tx.episode.update({ where: { id: parsed.data.episodeId }, data: { embedUrl: null } });
       }
+      return created;
     });
     return NextResponse.json({ server }, { status: 201 });
   } catch {
