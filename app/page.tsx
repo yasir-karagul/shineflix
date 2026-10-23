@@ -48,7 +48,6 @@ export default async function HomePage() {
   const featured = anime.filter(item => item.featured).length ? anime.filter(item => item.featured).slice(0, 6) : anime.slice(0, 6);
   const topRatedAnime = anime.filter(item => Number.isFinite(Number.parseFloat(item.rating)))
     .sort((a, b) => Number.parseFloat(b.rating) - Number.parseFloat(a.rating)).slice(0, 8);
-  const newAnime = newestFirst(anime).slice(0, 8);
   const newMovies = newestFirst(movies).slice(0, 8);
   const newTitles = allItems.slice(0, 8);
   const genres = Array.from(new Set(anime.flatMap(item => item.genres))).slice(0, 16);
