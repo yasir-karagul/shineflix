@@ -114,7 +114,7 @@ export function AdminDashboard({ initialItems, databaseReady, lang = "en" }: { i
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "TMDB lookup failed.");
       const item = data.item as TmdbResult;
-      TR(item); applyTmdb(item); LT(item.suggestedType);
+      TR(item); applyTmdb(item);
     } catch (error) {
       E(error instanceof Error ? error.message : t("تعذّر جلب بيانات TMDB.", "Could not fetch TMDB details."));
     } finally { B(false); }
@@ -263,6 +263,7 @@ export function AdminDashboard({ initialItems, databaseReady, lang = "en" }: { i
           <option value="movie">{t("فيلم في TMDB", "TMDB movie")}</option>
           <option value="tv">{t("مسلسل / أنمي في TMDB", "TMDB TV series / anime")}</option>
         </select>
+        {lookupMediaType === "tv" ? <select aria-label={t("تصنيف Shineflix", "Shineflix category")} value={lookupType} onChange={event => LT(event.target.value as ContentType)}><option value="SERIES">{t("مسلسل تلفزيوني", "TV series")}</option><option value="ANIME">{t("أنمي", "Anime")}</option></select> : null}
         <button className="button button-primary" disabled={busy}>{busy ? t("جارٍ الجلب…", "Fetching…") : t("جلب البيانات", "Fetch details")}</button>
       </form>
       {tmdbResult ? <article className="tmdb-result">
