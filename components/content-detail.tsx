@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import { FavoriteButton } from "@/components/favorite-button";
 import { AdSlot } from "@/components/ad-slot";
