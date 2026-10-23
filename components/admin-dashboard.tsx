@@ -77,10 +77,11 @@ export function AdminDashboard({ initialItems, databaseReady, lang = "en" }: { i
   );
 
   function set<K extends keyof Form>(key: K, value: Form[K]) { F(current => ({ ...current, [key]: value })); }
-  function fresh() { ED(null); F({ ...empty }); TR(null); TI(""); E(""); }
+  function fresh() { ED(null); F({ ...empty }); TR(null); TI(""); LMT("movie"); LT("MOVIE"); E(""); }
   function edit(item: Item) {
     ED(item);
     LT(item.type);
+    LMT(item.mediaType ?? (item.type === "MOVIE" ? "movie" : "tv"));
     F({
       tmdbId: item.tmdbId?.toString() ?? "", mediaType: item.mediaType ?? "tv",
       alternativeTitles: (item.alternativeTitles ?? []).join("\n"), posterPath: item.posterPath ?? "",
