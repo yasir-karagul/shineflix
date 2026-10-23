@@ -1,9 +1,12 @@
 import { prisma } from "@/lib/prisma";
+import { getLanguage } from "@/lib/i18n";
 
 type Placement = "SITE_TOP" | "HOME_INLINE" | "PLAYER_BEFORE" | "DETAIL_BOTTOM";
 type AdRecord = { id: string; title: string; format: "LINK" | "IMAGE" | "SCRIPT"; linkUrl: string | null; imageUrl: string | null; scriptCode: string | null };
 
 export async function AdSlot({ placement }: { placement: Placement }) {
+  const lang = await getLanguage();
+  const ar = lang === "ar";
   let ads: AdRecord[] = [];
   try {
     const now = new Date();
@@ -18,9 +21,9 @@ export async function AdSlot({ placement }: { placement: Placement }) {
     }) as AdRecord[];
   } catch { return null; }
   if (!ads.length) return null;
-  return <aside className={"ad-slot ad-slot-" + placement.toLowerCase()} aria-label="إعلانات">
+  return <aside className={"ad-slot ad-slot-" + placement.toLowerCase()} aria-label={ar ? "إعلانات" : "Advertisements"}>
     {ads.map(ad => <div className={"ad-unit ad-format-" + ad.format.toLowerCase()} key={ad.id}>
-      <span className="ad-label">إعلان</span>
+      <span className="ad-label">{ar ? "إعلان" : "Ad"}</span>
       {ad.format === "LINK" && ad.linkUrl ? <a href={ad.linkUrl} target="_blank" rel="sponsored noopener noreferrer">{ad.title}</a> : null}
       {ad.format === "IMAGE" && ad.imageUrl && ad.linkUrl ? <a href={ad.linkUrl} target="_blank" rel="sponsored noopener noreferrer" aria-label={ad.title}><img src={ad.imageUrl} alt={ad.title} loading="lazy" /></a> : null}
       {ad.format === "SCRIPT" && ad.scriptCode ? <iframe title={ad.title} loading="lazy" sandbox="allow-scripts allow-popups" referrerPolicy="strict-origin-when-cross-origin" srcDoc={ad.scriptCode} /> : null}
