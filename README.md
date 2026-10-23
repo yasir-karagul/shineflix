@@ -46,10 +46,11 @@ Set `NEXT_PUBLIC_SITE_URL` to the canonical production origin. Configure `DATABA
 Open `/admin/ads` after signing in to manage ads. Supported formats are text links, image banners, and HTML/JavaScript snippets rendered in a sandboxed iframe without same-origin access. Placements include the site-wide top banner, homepage inline area, before the movie player, and below title details. Ads can be enabled/disabled and scheduled with start/end times. Run `npm run db:push` after updating the Prisma schema. Only use ad-network code and destination URLs you trust; sandboxing reduces access to the Shineflix page but does not make a malicious ad provider safe.
 
 
-## Languages and redirect page
+## Languages and separate redirect site
 
-English is the default language. The language switcher stores the selection in the `shineflix_locale` cookie and switches between LTR English and RTL Arabic across the public site and admin pages. The same repo includes a bilingual `/redirect` landing page for use as a branded forwarding site. For a separate redirect-site deployment, set `NEXT_PUBLIC_MAIN_SITE_URL` to the canonical main-site URL and `REDIRECT_SITE_MODE="true"`. The main site should keep `REDIRECT_SITE_MODE="false"` or unset. With that setting, the redirect instance home page becomes the bilingual forwarding screen and is marked `noindex,nofollow`; the normal main-site deployment keeps `REDIRECT_SITE_MODE="false"` or unset. The redirect page is marked `noindex,nofollow`; it's intended to forward visitors rather than compete with the main site in search results. A `?lang=en` or `?lang=ar` query on arrival is persisted by the middleware.
+English is the default language. The main site language switcher stores the selection in the `shineflix_locale` cookie and supports left-to-right English and right-to-left Arabic. The main Shineflix application has no redirect-only runtime mode or embedded redirect landing page.
 
+The standalone destination site lives in `redirect-site/` and is deployed as a **separate Vercel project** connected to this repository with Root Directory set to `redirect-site`. Configure `VITE_MAIN_SITE_URL` in that project to point to the main Shineflix production origin. The redirect site is a static Vite app: it has its own deployment URL/domain and does not use the main site's database, Prisma, admin credentials, IMDb access, or ads configuration. See [redirect-site/README.md](redirect-site/README.md) for setup instructions.
 
 ## Neon PostgreSQL / Prisma 6
 
