@@ -11,7 +11,7 @@ type DetailItem = {
   posterPath: string | null; backdropPath: string | null; logoPath: string | null; tmdbStatus: string | null;
   originalLanguage: string | null; voteAverage: number | null; voteCount: number | null;
   originalTitle: string | null; synopsis: string; releaseYear: number | null; endYear: number | null;
-  genres: string[]; posterUrl: string | null; imdbRating: number | null; imdbVotes: number | null;
+  genres: string[]; posterUrl: string | null;
   embedUrl: string | null; streamServers: Stream[];
   seasons: Array<{ id: string; seasonNumber: number; title: string | null; episodes: Array<{
     id: string; episodeNumber: number; title: string; synopsis: string; embedUrl: string | null; streamServers: Stream[];
@@ -27,8 +27,8 @@ function sources(servers: Stream[], legacyUrl: string | null, ownerId: string): 
 export function ContentDetail({ item, lang = "en" }: { item: DetailItem; lang?: Language }) {
   const ar = lang === "ar";
   const originalTitle = item.originalTitle ?? item.title;
-  const ratingValue = item.voteAverage ?? item.imdbRating;
-  const voteCount = item.voteCount ?? item.imdbVotes;
+  const ratingValue = item.voteAverage;
+  const voteCount = item.voteCount;
   const rating = typeof ratingValue === "number" ? ratingValue.toFixed(1) : "—";
   const backHref = item.type === "MOVIE" ? "/movies" : item.type === "SERIES" ? "/series" : "/anime";
   const cover = item.posterUrl ? `url("${item.posterUrl}") center/cover no-repeat` : "linear-gradient(145deg,#24121f,#8d233e)";
