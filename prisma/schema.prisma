@@ -7,6 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum AdFormat {
+  LINK
+  IMAGE
+  SCRIPT
+}
+
+enum AdPlacement {
+  SITE_TOP
+  HOME_INLINE
+  PLAYER_BEFORE
+  DETAIL_BOTTOM
+}
+
 enum ContentType {
   MOVIE
   SERIES
@@ -17,6 +30,24 @@ enum PublicationStatus {
   DRAFT
   PUBLISHED
   ARCHIVED
+}
+
+model Ad {
+  id          String      @id @default(cuid())
+  title       String
+  format      AdFormat
+  placement   AdPlacement
+  isActive    Boolean     @default(false)
+  linkUrl     String?
+  imageUrl    String?
+  scriptCode  String?     @db.Text
+  startsAt    DateTime?
+  endsAt      DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([isActive, placement])
+  @@index([startsAt, endsAt])
 }
 
 model Content {
