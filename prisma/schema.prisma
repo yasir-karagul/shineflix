@@ -53,7 +53,17 @@ model Ad {
 
 model Content {
   id              String            @id @default(cuid())
-  imdbId          String?           @unique
+  imdbId          String?           @unique // Legacy IMDb field retained for existing rows; new imports use TMDB.
+  tmdbId          Int?
+  mediaType       String?
+  alternativeTitles String[]         @default([])
+  posterPath      String?
+  backdropPath    String?
+  logoPath        String?
+  tmdbStatus      String?
+  originalLanguage String?
+  voteAverage     Float?
+  voteCount       Int?
   slug            String            @unique
   type            ContentType
   title           String
@@ -76,9 +86,11 @@ model Content {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   seasons         Season[]
+  streamServers   StreamServer[]
 
   @@index([type, status, releaseYear])
   @@index([title])
+  @@unique([tmdbId, mediaType])
 }
 
 model Season {
@@ -106,6 +118,7 @@ model Episode {
   embedUrl       String?
   isPublished    Boolean   @default(false)
   season         Season    @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  streamServers  StreamServer[]
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -121,4 +134,22 @@ model WatchlistEntry {
 
   @@unique([userId, contentId])
   @@index([userId, createdAt])
+}
+
+
+model StreamServer {
+  id         String   @id @default(cuid())
+  name       String   @db.VarChar(100)
+  url        String   @db.Text
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  contentId  String?
+  episodeId  String?
+  content    Content? @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  episode    Episode? @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([contentId, sortOrder])
+  @@index([episodeId, sortOrder])
 }
