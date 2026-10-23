@@ -39,3 +39,8 @@ Create a title, add seasons, then add episodes to the chosen season. Use only vi
 ## Deployment
 
 Set `NEXT_PUBLIC_SITE_URL` to the canonical production origin. Configure `DATABASE_URL`, admin credentials, and any optional IMDb credentials in the hosting provider. Run the Prisma schema setup before using the CMS. Google indexing requires a deployed public domain and Search Console verification; sitemap submission does not guarantee indexing.
+
+
+## Advertising manager
+
+Open `/admin/ads` after signing in to manage ads. Supported formats are text links, image banners, and HTML/JavaScript snippets rendered in a sandboxed iframe without same-origin access. Placements include the site-wide top banner, homepage inline area, before the movie player, and below title details. Ads can be enabled/disabled and scheduled with start/end times. Run `npm run db:push` after updating the Prisma schema. Only use ad-network code and destination URLs you trust; sandboxing reduces access to the Shineflix page but does not make a malicious ad provider safe.
