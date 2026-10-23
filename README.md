@@ -49,3 +49,17 @@ Open `/admin/ads` after signing in to manage ads. Supported formats are text lin
 ## Languages and redirect page
 
 English is the default language. The language switcher stores the selection in the `shineflix_locale` cookie and switches between LTR English and RTL Arabic across the public site and admin pages. The same repo includes a bilingual `/redirect` landing page for use as a branded forwarding site. For a separate redirect-site deployment, set `NEXT_PUBLIC_MAIN_SITE_URL` to the canonical main-site URL and `REDIRECT_SITE_MODE="true"`. The main site should keep `REDIRECT_SITE_MODE="false"` or unset. With that setting, the redirect instance home page becomes the bilingual forwarding screen and is marked `noindex,nofollow`; the normal main-site deployment keeps `REDIRECT_SITE_MODE="false"` or unset. The redirect page is marked `noindex,nofollow`; it's intended to forward visitors rather than compete with the main site in search results. A `?lang=en` or `?lang=ar` query on arrival is persisted by the middleware.
+
+
+## Neon PostgreSQL / Prisma 6
+
+The Prisma datasource uses `DATABASE_URL` for application queries and `DATABASE_URL_UNPOOLED` as Prisma's direct migration connection. Copy both connection strings for the same Neon branch/database from the Neon Console; use the pooled hostname for `DATABASE_URL` when pooling is enabled, and the direct hostname (without `-pooler`) for `DATABASE_URL_UNPOOLED`. Never commit actual credentials. On Windows PowerShell, after creating a local `.env` file from `.env.example`, run:
+
+```powershell
+npm install
+npm run db:generate
+npm run db:push
+npm run build
+```
+
+`db:push` synchronizes the Prisma schema with the selected database. Use it only after confirming `DATABASE_URL` points to the intended Neon branch/database.
