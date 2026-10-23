@@ -21,16 +21,18 @@ English-first bilingual media catalogue built with Next.js, TypeScript, Prisma, 
 
 Never commit real secrets. Set `ADMIN_PASSWORD` to a unique password and `ADMIN_SESSION_SECRET` to at least 32 random characters. Configure all environment variables in your hosting provider as well.
 
-## IMDb metadata integration
+## TMDB metadata integration
 
-The search adapter uses the AWS SDK's `SendApiAsset` operation to call the official IMDb GraphQL API through an active AWS Data Exchange subscription. You must have the appropriate licensed IMDb product access and configure:
+Shineflix uses the official TMDB v3 API for title metadata. In the admin CMS, enter a numeric TMDB ID and select the TMDB media type (`movie` or `tv`). The server requests the matching details endpoint and appends `alternative_titles` and `images`, including poster, backdrop, and logo paths where available. It imports the title/original title, alternate titles, overview, TMDB work status, rating and vote count, genres, original language, and release/end years. The Shineflix editorial publication status remains separate from the status returned by TMDB.
 
-- `IMDB_DATASET_ID`, `IMDB_REVISION_ID`, and `IMDB_ASSET_ID` from the subscribed data product.
-- `IMDB_API_KEY` issued for that API access.
-- `IMDB_GRAPHQL_PATH` for the provider's GraphQL route (defaults to `/graphql`).
-- AWS credentials with permission to invoke the subscribed API asset, plus `AWS_REGION`.
+Configure one of these server-side environment variables in your hosting provider:
 
-The admin flow is: search IMDb, select a result, review or correct the metadata, then save it. Search does not import IMDb's entire catalogue in bulk. The public IMDb downloadable datasets have separate non-commercial restrictions; do not republish them in a public or commercial catalogue without permission. Never scrape IMDb pages or use metadata/images beyond the rights granted by your license.
+- `TMDB_ACCESS_TOKEN`: preferred; the API Read Access Token from the TMDB account API settings, sent in the `Authorization: Bearer` header.
+- `TMDB_API_KEY`: optional fallback if you use a TMDB v3 API key.
+
+Do not expose either credential through a `NEXT_PUBLIC_*` variable or commit it to source control. Image file paths are stored as returned by TMDB; Shineflix constructs image CDN URLs for posters and backdrops.
+
+TMDB requires attribution in the application, including an approved TMDB logo and the notice: **“This product uses the TMDB API but is not endorsed or certified by TMDB.”** If the site's primary purpose is revenue generation, check with TMDB about commercial licensing. See the [official API authentication guide](https://developer.themoviedb.org/docs/authentication-application) and [TMDB API FAQ](https://developer.themoviedb.org/docs/faq).
 
 ## Seasons, episodes, and embeds
 
