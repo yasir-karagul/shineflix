@@ -142,7 +142,7 @@ export default async function HomePage() {
           <div className={styles.episodeGrid}>
             {latestEpisodes.map(episode => {
               const item = episode.season.content;
-              const rating = (item.voteAverage ?? item.imdbRating)?.toFixed(1);
+              const rating = item.voteAverage?.toFixed(1);
               const posterStyle = item.posterUrl ? { backgroundImage: `url("${item.posterUrl}")` } : undefined;
               return (
                 <Link href={`/anime/${item.slug}`} key={episode.id} className={styles.episodeCard}>
